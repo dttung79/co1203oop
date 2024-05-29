@@ -38,10 +38,10 @@ def add():
     # enter product id
     id = int(input('Enter product id: '))
     # check id exist => error
-    for i in range(len(ids)):
-        if id == ids[i]:
-            print(f'ID {id} existed. Please choose other id.')
-            return
+    pos = check_id_exist(id)
+    if pos != -1:
+        print(f'ID {id} existed. Please choose other id.')
+        return
     # enter other information
     name = input('Enter product name: ')
     price = int(input('Enter product price: '))
@@ -51,15 +51,17 @@ def add():
     prices.append(price)
     print('Add new product success.')
 
+def check_id_exist(id):
+    for i in range(len(ids)):
+        if ids[i] == id:
+            return i
+    return -1
+
 def edit():
     # enter product id
     id = int(input('Enter product id to edit: '))
     # check id not exist => error
-    pos = -1
-    for i in range(len(ids)):
-        if ids[i] == id:
-            pos = i
-            break
+    pos = check_id_exist(id)
     if pos == -1:
         print(f'No product for ID {id}')
         return
@@ -71,5 +73,31 @@ def edit():
 
 def delete():
     # enter product id
+    id = int(input('Enter product id to delete: '))
     # check id not exist => error
+    pos = check_id_exist(id)
+    if pos == -1:
+        print(f'No product for ID {id}')
+        return
     # delete id, name, price in 3 lists at found position (ids.pop(pos))
+    ids.pop(pos)
+    names.pop(pos)
+    prices.pop(pos)
+    print(f'Delete product ID {id} success.')
+
+def search():
+    # enter product name
+    name = input('Enter product name to search: ')
+    # search by for loop, if found print product information
+    count = 0
+    for i in range(len(names)):
+        if names[i] == name:
+            print(f'Product ID: {ids[i]}, name: {names[i]}, price: ${prices[i]}')
+            count += 1
+    # if not found => print error
+    if count == 0:
+        print(f'No product found for name {name}')
+
+    
+#### MAIN ####
+main()
