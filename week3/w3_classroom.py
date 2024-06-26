@@ -1,5 +1,5 @@
 # syntax to import: from file_name import class_name
-from student import Student
+from w3_student import Student
 
 class ClassRoom:
     def __init__(self, name):
