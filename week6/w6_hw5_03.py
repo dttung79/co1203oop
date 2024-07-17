@@ -23,19 +23,19 @@ class BookStoreGUI:
         lbl_book = Label(self.window, text="Book :")
         lbl_book.grid(row=0, column=0, padx=5, pady=5, sticky=W)
 
-        self.txt_book = Entry(self.window, width=20)
+        self.txt_book = Entry(self.window, width=25)
         self.txt_book.grid(row=0, column=1, padx=5, pady=5, sticky=W, columnspan=2)
 
         lbl_price = Label(self.window, text="Price :")
         lbl_price.grid(row=1, column=0, padx=5, pady=5, sticky=W)
 
-        self.txt_price = Entry(self.window, width=20)
+        self.txt_price = Entry(self.window, width=25)
         self.txt_price.grid(row=1, column=1, padx=5, pady=5, sticky=W, columnspan=2)
 
         lbl_quantity = Label(self.window, text="Quantity :")
         lbl_quantity.grid(row=2, column=0, padx=5, pady=5, sticky=W)
 
-        self.txt_quantity = Entry(self.window, width=20)
+        self.txt_quantity = Entry(self.window, width=25)
         self.txt_quantity.grid(row=2, column=1, padx=5, pady=5, sticky=W, columnspan=2)
     
     def __create_checkboxes(self):
@@ -51,10 +51,36 @@ class BookStoreGUI:
         self.cb_card.grid(row=3, column=2, padx=5, pady=5, sticky=W)
     
     def __create_radio_buttons(self):
-        pass
+        lbl_delivery = Label(self.window, text="Delivery :")
+        lbl_delivery.grid(row=4, column=0, padx=5, pady=5, sticky=W)
+
+        self.delivery_var = IntVar()
+        self.rd_normal = Radiobutton(self.window, text="Normal (Free)", variable=self.delivery_var, value=0)
+        self.rd_normal.grid(row=4, column=1, padx=5, pady=5, sticky=W)
+
+        self.rd_express = Radiobutton(self.window, text="Express ($2)", variable=self.delivery_var, value=2)
+        self.rd_express.grid(row=5, column=1, padx=5, pady=5, sticky=W)
+
+        self.rd_immediate = Radiobutton(self.window, text="Immediate ($5)", variable=self.delivery_var, value=5)
+        self.rd_immediate.grid(row=6, column=1, padx=5, pady=5, sticky=W)
 
     def __btn_payment_clicked(self):
-        pass
+        try:
+            price = float(self.txt_price.get())
+            quantity = int(self.txt_quantity.get())
+            total_price = price * quantity
+
+            if self.cover_var.get() == True:
+                total_price += 1
+            
+            if self.card_var.get():
+                total_price += 1.5
+            
+            total_price += self.delivery_var.get()
+
+            msb.showinfo("Payment", f"Total Price: ${total_price}")
+        except ValueError:
+            msb.showerror("Error", "Please enter valid price and quantity")
 
     # Only run method needs to be public
     def run(self):
